@@ -37,3 +37,10 @@ Pictures are matched to the doc by their alt text, so if an alt text changes in 
 A design change means editing `_build/style.css`, `_build/site.js` or `_build/build.py`, then steps 3–5.
 
 Requirements: Python 3 with the `markdown` and `Pillow` packages.
+
+## The family tree in the Introduction
+
+`family_tree.py` draws the tree (`python3 _build/family_tree.py tree.svg`). Render the SVG to a
+2270 × 1890 PNG (for example with Playwright at device scale 2 on a 1135 × 945 page), then put
+the PNG in the doc (upload as an asset, create a blob, replace the image block) and on the site
+with `add_image.py` (it is picture 4, "Family tree of Niels Christian Olesen").
