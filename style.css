@@ -113,9 +113,27 @@ sup.nref { line-height: 0; font-size: .7em; font-family: var(--f-ui); font-weigh
 sup.nref a { text-decoration: none; padding: 0 .12em; }
 sup.nref a:hover { text-decoration: underline; }
 
-/* notes */
-.notes { margin-top: 3.5rem; padding-top: 1.4rem; border-top: 1px solid var(--ink); font-size: .95rem; line-height: 1.55; }
-.notes h2 { font-family: var(--f-ui); font-size: .85rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 600; margin: 0 0 .6rem; color: var(--accent); }
+/* notes: folded away until the reader opens them */
+.notes { margin-top: 3.5rem; font-size: .95rem; line-height: 1.55; }
+.notes details { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.notes summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: .7rem;
+  padding-block: 1rem; font-family: var(--f-ui); font-weight: 600; font-size: .95rem;
+  letter-spacing: .03em; color: var(--accent);
+}
+.notes summary::-webkit-details-marker { display: none; }
+.notes summary::before {
+  content: ""; width: .55rem; height: .55rem; flex: none; margin-left: .15rem;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg); transition: transform .15s ease;
+}
+.notes details[open] summary::before { transform: rotate(45deg); }
+.notes summary:hover .sum-open, .notes summary:hover .sum-close { text-decoration: underline; text-underline-offset: .18em; }
+.sum-count { margin-left: auto; font-weight: 400; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sum-close { display: none; }
+.notes details[open] .sum-open { display: none; }
+.notes details[open] .sum-close { display: inline; }
+.notes-body { padding-block: .2rem 1.6rem; }
 .notes-intro { color: var(--muted); font-size: .88rem; margin: 0 0 1.2rem; }
 .notes ol { list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; }
 .notes li { display: grid; grid-template-columns: 2.1rem 1fr; gap: .4rem; scroll-margin-top: 5rem; border-radius: 3px; }

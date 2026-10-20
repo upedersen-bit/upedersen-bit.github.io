@@ -1,4 +1,22 @@
 (function () {
+  // Notes are folded away; open them whenever a link points into them.
+  var notes = document.getElementById("notes");
+  function openNotesFor(hash) {
+    if (!notes || !hash || !/^#n\d+$/.test(hash)) return;
+    var li = document.getElementById(hash.slice(1));
+    if (!li) return;
+    notes.open = true;
+    li.scrollIntoView({ block: "start" });
+  }
+  if (notes) {
+    openNotesFor(location.hash);
+    window.addEventListener("hashchange", function () { openNotesFor(location.hash); });
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#n"]');
+      if (a && !a.closest("sup.nref")) { notes.open = true; }
+    }, true);
+  }
+
   // Note references: open the note in a sheet at the bottom of the screen.
   var sheet = document.getElementById("sheet");
   if (sheet) {
