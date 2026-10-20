@@ -130,8 +130,13 @@ def figures(body):
 
 def fig_html(fig, alt, cap, sups):
     cap_html = sups(md_inline(cap)) if cap else ""
-    # an all-italic caption: drop the outer emphasis, the figcaption is styled already
-    cap_html = re.sub(r"^<em>(.*)</em>$", r"\1", cap_html, flags=re.S)
+    # An italic caption: the doc sets captions in italics, with any title inside them in roman.
+    # Captions here are already set apart by their own style, so drop the outer italics and
+    # flip the inner ones, so that a book or ship title inside a caption is the italic part.
+    if cap_html.startswith("<em>") and cap_html.endswith("</em>"):
+        inner = cap_html[4:-5]
+        inner = inner.replace("</em>", "\x00").replace("<em>", "</em>").replace("\x00", "<em>")
+        cap_html = re.sub(r"<em>(\s*)</em>", r"\1", inner)
     return (f'<figure class="fig"><a class="zoom" href="img/full/{fig}.jpg" data-full="img/full/{fig}.jpg">'
             f'<img src="img/web/{fig}.jpg" alt="{html.escape(alt)}" loading="lazy"></a>'
             + (f"<figcaption>{cap_html}</figcaption>" if cap_html else "") + "</figure>")
