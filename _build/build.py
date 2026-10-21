@@ -38,6 +38,19 @@ for ln in lines:
         fixed.append(ln)
 md_text = "\n".join(fixed)
 
+# The doc's export splits a caption that was edited in pieces into many italic runs, and writes the
+# joins as "**" (e.g. "*The **d**a**te**s*"), which markdown would read as bold. A caption is italic
+# from end to end, so inside such a line the "**" joins carry no meaning: remove them.
+def fix_caption(ln):
+    s = ln.strip()
+    if s.startswith("*") and not s.startswith("**") and s.endswith("*") and "**" in s:
+        s = s.replace("**", "")
+        s = re.sub(r"\* \*", " ", s)          # a plain space between two italic runs
+        s = re.sub(r" {2,}", " ", s)
+        return s
+    return ln
+md_text = "\n".join(fix_caption(l) for l in md_text.split("\n"))
+
 # ---- split into sections --------------------------------------------------
 # cover = everything before "## Contents"
 cover_md, rest = md_text.split("\n## Contents", 1)
